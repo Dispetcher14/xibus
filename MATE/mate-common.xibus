@@ -11,10 +11,10 @@ sha1sum = "b351bddb8e9e6674c3f004808e5c64766a17f3f6"
 API_VERSION = 1
 
 def build():
-    cd(name[:-5] + "-" + version, 0)
+    cd(name + "-" + version, 0)
     configure("autogen --prefix=/usr")
     make("")
 
 def package():
-    cd(name[:-5] + "-" + version, 0)
+    cd(name + "-" + version, 0)
     make_install("")
