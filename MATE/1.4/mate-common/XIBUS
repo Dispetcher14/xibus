@@ -1,12 +1,12 @@
 name = "mate-common"
-version = "1.4.0
+version = "1.4.0"
 release = "1"
 description = "Common of MATE"
 license = "GPL"
 url = "http://mate-desktop.org/"
 depends = ["autoconf", "automake", "libtool", "pkg-config", "gettext", "intltool", "gtk-doc-tools"]
 provides = "freetype2"
-source = "http://pub.mate-desktop.org/releases/1.4/mate-common-1.4.0.tar.xz)
+source = "http://pub.mate-desktop.org/releases/1.4/{0}-{1}.tar.xz"
 sha1sum = "b351bddb8e9e6674c3f004808e5c64766a17f3f6"
 API_VERSION = 1
 
