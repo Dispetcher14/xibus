@@ -1,0 +1,24 @@
+name = "mate-doc-utils"
+version = "1.4.0"
+release = "1"
+arch = "all"
+description = "Collection of documentation utilities for the Mate"
+license = "GPL"
+url = "http://mate-desktop.org"
+depends = ["mate-common", "libxml-2.0 >= 2.6.12", "libxslt", "rarian"]
+provides = "MATE"
+source = "http://pub.mate-desktop.org/releases/1.4/{0}-{1}.tar.xz".format(name, version)
+sha1sum = "f527d97fa1f7a7f01da2c2cf9ff0b0422f59fe5f"
+API_VERSION = 1
+group = ["mate", "mate-base"]
+
+def build():
+    cd(name + "-" + version, 1)
+    configure("autogen --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --localstatedir=/var --disable-scrollkeeper")
+    make("")
+    
+def package():
+    cd(name + "-" + version, 1)
+    make_install("")        
+
+
