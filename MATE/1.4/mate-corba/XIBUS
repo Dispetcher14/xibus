@@ -2,19 +2,19 @@ name = "mate-corba"
 version = "1.4.0"
 release = "1"
 arch = "all"
-description = "Collection of documentation utilities for the Mate"
+description = "CORBA of MATE"
 license = "GPL"
 url = "http://mate-desktop.org"
-depends = ["mate-common", "libxml-2.0 >= 2.6.12", "libxslt", "rarian"]
+depends = ["mate-common", "glib-2.0 >= 2.8.0", "gobject-2.0 >= 2.8.0", "gthread-2.0 >= 2.8.0", "gmodule-2.0 >= 2.8.0"]
 provides = "MATE"
 source = "http://pub.mate-desktop.org/releases/1.4/{0}-{1}.tar.xz".format(name, version)
-sha1sum = "f527d97fa1f7a7f01da2c2cf9ff0b0422f59fe5f"
+sha1sum = "cabdd87cca8e6fbac78499d9edc9d36f6cea7423"
 API_VERSION = 1
 group = ["mate", "mate-base"]
 
 def build():
     cd(name + "-" + version, 1)
-    configure("autogen --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --localstatedir=/var --disable-scrollkeeper")
+    configure("autogen --prefix=/usr --disable-static")
     make("")
     
 def package():
