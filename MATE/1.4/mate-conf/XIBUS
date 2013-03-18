@@ -1,0 +1,24 @@
+name = "mate-conf"
+version = "1.4.0"
+release = "1"
+arch = "all"
+description = "Configuration database system"
+license = "GPL"
+url = "http://mate-desktop.org"
+depends = ["mate-common", "mate-corba", "glib-2.0 > 2.14.0", "gio-2.0 >= 2.25.9", "gthread-2.0", "gmodule-2.0 >= 2.7.0", "gobject-2.0 >= 2.7.0", "gobject-introspection-1.0 >= 0.6.2"]
+provides = "MATE"
+source = "http://pub.mate-desktop.org/releases/1.4/{0}-{1}.tar.xz".format(name, version)
+sha1sum = "07a0c599b4eee4a305a0fe8f59be5aa215520249"
+API_VERSION = 1
+group = ["mate", "mate-base"]
+
+def build():
+    cd(name + "-" + version, 1)
+    configure("autogen --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/lib/MateConf  --localstatedir=/var --disable-static  --enable-defaults-service --enable-gsettings-backend=no --enable-introspection")
+    make("")
+    
+def package():
+    cd(name + "-" + version, 1)
+    make_install("")        
+
+
