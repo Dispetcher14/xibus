@@ -1,0 +1,24 @@
+name = "libmatecomponent"
+version = "1.4.0"
+release = "1"
+arch = "all"
+description = "Part of the matecomponent component infrastructure of MATE"
+license = "GPL"
+url = "http://mate-desktop.org"
+depends = ["mate-common", "mate-corba", "flex", "popt >= 1.5"]
+provides = "MATE"
+source = "http://pub.mate-desktop.org/releases/1.4/{0}-{1}.tar.xz".format(name, version)
+sha1sum = "df8f066d3ccd1d585dcafd3fae1fb4c93d69bbad"
+API_VERSION = 1
+group = ["mate", "mate-base"]
+
+def build():
+    cd(name + "-" + version, 1)
+    configure("autogen --prefix=/usr --sysconfdir=/etc --localstatedir=/var --disable-static --libexecdir=/usr/lib/matecomponent")
+    make("")
+    
+def package():
+    cd(name + "-" + version, 1)
+    make_install("")        
+
+
