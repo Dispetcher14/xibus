@@ -1,0 +1,24 @@
+name = "mate-mime-data"
+version = "1.4.0"
+release = "1"
+arch = "all"
+description = "Module contains the base MIME and Application database for MATE"
+license = "GPL"
+url = "http://mate-desktop.org"
+depends = ["mate-common", "shared-mime-info", "intltool"]
+provides = "MATE"
+source = "http://pub.mate-desktop.org/releases/1.4/mate-mime-data-1.4.0.tar.xz".format(name, version)
+sha1sum = "888a71e79bd28ac6f10761db11d5f750604ff3a2"
+API_VERSION = 1
+group = ["mate", "mate-base"]
+
+def build():
+    cd(name + "-" + version, 1)
+    configure("autogen --prefix=/usr --sysconfdir=/etc --localstatedir=/var")
+    make("")
+    
+def package():
+    cd(name + "-" + version, 1)
+    make_install("")        
+
+
