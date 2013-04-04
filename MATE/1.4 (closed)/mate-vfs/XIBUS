@@ -1,0 +1,30 @@
+name = "mate-vfs"
+version = "1.4.0"
+release = "1"
+arch = "all"
+description = "MATE Virtual File System, a fork of GNOME Virtual File System."
+license = "GPL"
+url = "http://mate-desktop.org"
+depends = ["mate-common", "mate-conf", "mate-mime-data", "intltool >= 0.35.0", "glib-2.0 >= 2.9.3", "gmodule-no-export-2.0 >= 2.9.3", "gthread-2.0 >= 2.9.3", "libxml-2.0 >= 2.6.0", "libgnutls >= 1.0.0"]
+provides = "MATE"
+source = "http://pub.mate-desktop.org/releases/1.4/{0}-{1}.tar.xz".format(name, version)
+sha1sum = "07a0c599b4eee4a305a0fe8f59be5aa215520249"
+API_VERSION = 1
+group = ["mate", "mate-base"]
+
+def build():
+    cd(name + "-" + version, 1)
+    configure_keys = """--prefix=/usr --sysconfdir=/etc \
+        --localstatedir=/var --disable-static \
+        --libexecdir=/usr/lib/mate-vfs \
+        --enable-samba --disable-hal \
+        --enable-avahi --disable-howl \
+        --enable-openssl --disable-gnutls"""
+    configure("autogen configure_keys")
+    make("")
+    
+def package():
+    cd(name + "-" + version, 1)
+    make_install("")        
+
+

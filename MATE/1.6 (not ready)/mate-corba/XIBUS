@@ -1,0 +1,24 @@
+name = "mate-corba"
+version = "1.6.0"
+release = "1"
+arch = "all"
+description = "CORBA of MATE"
+license = "GPL"
+url = "http://mate-desktop.org"
+depends = ["mate-common", "glib-2.0 >= 2.8.0", "gobject-2.0 >= 2.8.0", "gthread-2.0 >= 2.8.0", "gmodule-2.0 >= 2.8.0"]
+provides = "MATE"
+source = "http://pub.mate-desktop.org/releases/1.6/{0}-{1}.tar.xz".format(name, version)
+sha1sum = "cabdd87cca8e6fbac78499d9edc9d36f6cea7423"
+API_VERSION = 1
+group = ["mate", "mate-base"]
+
+def build():
+    cd(name + "-" + version, 1)
+    configure("autogen --prefix=/usr --disable-static")
+    make("")
+    
+def package():
+    cd(name + "-" + version, 1)
+    make_install("")        
+
+
