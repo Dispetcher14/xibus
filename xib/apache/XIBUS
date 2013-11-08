@@ -1,5 +1,3 @@
-# Copyright 2012 Xilitra Linux Project
-# Maintainers: Valdos "fat0troll" Sine
 name = "apache" 
 version = "2.2.25"
 release = "0"
