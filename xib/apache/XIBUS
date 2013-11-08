@@ -1,0 +1,78 @@
+# Copyright 2012 Xilitra Linux Project
+# Maintainers: Valdos "fat0troll" Sine
+name = "apache" 
+version = "2.2.25"
+release = "0"
+description = "A high performance Unix-based HTTP server" 
+license = "APACHE" 
+url = "http://www.apache.org/dist/httpd" 
+arch = "all" 
+depends = ["openssl", "zlib", "apr-util", "pcre", "systemd"]
+makedepends = []
+optdepends = [
+    ("lynx", "apachectl status")
+]
+
+patch_url = "http://mpm-itk.sesse.net/apache2.2-mpm-itk-2.2.17-01"
+source = "http://www.apache.org/dist/httpd/httpd-{0}.tar.bz2".format(version)
+
+groups = ["server"]
+md5sum = "9ebe3070c0bb4311f21a0cd0e34f0045"
+
+#sha1sum = "" 
+#sha256sum = "" 
+#sha512sum = "" 
+API_VERSION = 2
+
+def build():
+    cd(SRCDIR+"httpd-"+version)
+    apply_patch("9000", "-Np0 -i")
+    sed("-i -e", "'s#User daemon#User http#'", "docs/conf/httpd.conf.in")
+    sed("-i -e", "'s#Group daemon#Group http#'", "docs/conf/httpd.conf.in")
+    cp(SRCDIR+"/arch.layout", "config.layout")
+    cd("..")
+    cpdir("httpd-{0}".format(version), "httpd-it-{0}".format(version), true)
+    cd("httpd-it-{0}".format(version))
+    sed("-i -e", "'s/mpmt_os2}/mpmt_os2|winnt}/g'", SRCDIR+"/03-add-mpm-to-build-system.patch")
+    mkdir("server/mpm/experimental/itk")
+    cpdir("server/mpm/prefork/*", "server/mpm/experimental/itk/", true)
+    mv("server/mpm/experimental/itk/prefork.c", "server/mpm/experimental/itk/itk.c")
+    do_patches("-Np1 -i")
+    autoconf()
+    cd("..")
+    for mpm in ["prefork", "worker", "itk"]:
+        if (mpm == "itk"):
+            CONFIG_URE = "./httpd-itk-{0}/configure".format(version)
+        else:
+            CONFIG_URE = "./httpd-{0}/configure".format(version)
+        mkdir("build-"+mpm)
+        cd("build-"+mpm)
+        conf_opts = """--enable-layout=Arch \
+			--enable-modules=all \
+			--enable-mods-shared=all \
+			--enable-so \
+			--enable-suexec \
+			--with-suexec-caller=http \
+			--with-suexec-docroot=/srv/http \
+			--with-suexec-logfile=/var/log/httpd/suexec.log \
+			--with-suexec-bin=/usr/bin/suexec \
+			--with-suexec-uidmin=99 --with-suexec-gidmin=99 \
+			--enable-ldap --enable-authnz-ldap \
+			--enable-cache --enable-disk-cache --enable-mem-cache --enable-file-cache \
+			--enable-ssl --with-ssl \
+			--enable-deflate --enable-cgid \
+			--enable-proxy --enable-proxy-connect \
+			--enable-proxy-http --enable-proxy-ftp \
+			--enable-dbd \
+			--with-apr=/usr/bin/apr-1-config \
+			--with-apr-util=/usr/bin/apu-1-config \
+			--with-pcre=/usr \
+			--with-mpm={0}""".format(mpm)
+        conf_way = "../"+CONFIG_URE    
+        configure("custom %s %s" % (conf_way, conf_opts))
+        make()
+        cd("..")
+    
+def package():
+    cd(SRCDIR+"httpd-"+version)
+
